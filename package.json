@@ -1,12 +1,14 @@
 {
-  "name": "claude-animation-base",
+  "name": "taxtalk-animation-base",
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
-  "description": "Clawd, painted in p5.brush: a character kit and guide for making hand-painted Clawd animations",
+  "description": "TAXTALK Animation Base: the TAXTALK mascot and tax props, painted in p5.brush, on top of the Clawd character kit",
   "scripts": {
     "sheet": "node render.mjs --sheet=0,1,2,3,4,5 --out=out/sheet.jpg",
-    "video": "node render.mjs --clip --out=out/video.mp4"
+    "video": "node render.mjs --clip --out=out/video.mp4",
+    "taxtalk": "node render.mjs --clip --out=out/taxtalk.mp4",
+    "taxtalk-sheet": "node render.mjs --loop=taxtalk --sheet=2.9 --cols=1 --w=1920 --out=out/taxtalk_sheet.jpg"
   },
   "dependencies": {
     "p5": "^2.3.3",

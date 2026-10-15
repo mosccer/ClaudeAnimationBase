@@ -45,11 +45,19 @@ function turn(t, t0, t1, a0, a1) {
 // ---------- colour ----------
 // Tints shift the body colour with the mood. tint: a name here or any hex colour; tintK: 0..1 strength.
 const TINT = { pale: '#F6E6D2', flush: '#E23E36', blue: '#6D86BE', rosy: '#EF8EA8', green: '#98B25E', gold: '#F0BE46' };
+// The tint is applied to the character's own colours (col / dk / lt, Clawd's clay by default) when it's drawn, so a
+// mood change cross-fades between two tints (tintFrom → tint by tintMix, set by emotions()) on any body colour.
 function tintCols(o) {
   const c = { col: o.col || PAL.clay, dk: o.dk || PAL.clayDk, lt: o.lt || '#F5B394' };
-  const tc = o.tint && (TINT[o.tint] || o.tint), k = clamp(o.tintK ?? 1);
-  if (!tc || k <= 0) return c;
-  return { col: mixCol(c.col, tc, .55 * k), dk: mixCol(c.dk, mixCol(tc, PAL.ink, .35), .5 * k), lt: mixCol(c.lt, mixCol(tc, '#FFFFFF', .4), .45 * k) };
+  const one = (tint, tintK) => {
+    const tc = tint && (TINT[tint] || tint), k = clamp(tintK ?? 1);
+    if (!tc || k <= 0) return c;
+    return { col: mixCol(c.col, tc, .55 * k), dk: mixCol(c.dk, mixCol(tc, PAL.ink, .35), .5 * k), lt: mixCol(c.lt, mixCol(tc, '#FFFFFF', .4), .45 * k) };
+  };
+  const b = one(o.tint, o.tintK);
+  if (!o.tintFrom || (o.tintMix ?? 1) >= 1) return b;
+  const a = one(o.tintFrom.tint, o.tintFrom.tintK), m = clamp(o.tintMix);
+  return { col: mixCol(a.col, b.col, m), dk: mixCol(a.dk, b.dk, m), lt: mixCol(a.lt, b.lt, m) };
 }
 
 // ---------- Clawd ----------
@@ -599,8 +607,7 @@ function emotions(t, keys, o = {}) {
     const base = { dy: 0, sq: 0, aL: .2, aR: .2, rot: 0, dx: 0, lookX: 0, lookY: 0 };
     const k = backOut(seg(age, 0, .4)), kc = ease(seg(age, 0, .3));
     for (const f in base) cur[f] = lerp(prev[f] ?? base[f], cur[f] ?? base[f], k);
-    const a = tintCols(prev), b = tintCols(cur);
-    cur.col = mixCol(a.col, b.col, kc); cur.dk = mixCol(a.dk, b.dk, kc); cur.lt = mixCol(a.lt, b.lt, kc); cur.tint = null;
+    cur.tintFrom = { tint: prev.tint, tintK: prev.tintK }; cur.tintMix = kc;   // tintCols() cross-fades them on the body's own colours
     for (const f of ['blush', 'gloom', 'lid']) cur[f] = lerp(prev[f] || 0, cur[f] || 0, kc);
   }
   // takes: the one this key fires, plus the anticipation squash of the next one

@@ -219,8 +219,10 @@ node render.mjs --encode --out=out/video.mp4                    # … then encod
 | `src/core.js` | canvas, palette, timing and motion helpers, `paint()`, camera, full-frame effects, `glow()`, lettering, paper, render hooks |
 | `src/clawd.js` | Clawd: views, emotions, eyes, mouths, hats, emotes, moves |
 | `src/timeline.js` | `shots()`, `LOOPS`, `brushWipe()` |
+| `src/taxtalk.js` | TAXTALK: brand palette `TT`, the mascot `taxtalk()`, tax props, `logoCard()`, `?loop=taxtalk` (see the end of this guide) |
 | `src/sheets.js` | the model sheets as loops (`?loop=emotions`, `?loop=views`) |
 | `src/scenes/demo.js` | an 11-second example. **Don't copy it** (see the end of this guide) |
+| `src/scenes/taxtalk_demo.js` | a 15.5-second TAXTALK example (loaded in `studio.html`). One idea, not a template |
 | `studio.html` | open it in Chrome to scrub the video (`?t=2.5` jumps to a time, `?loop=emotions` shows a loop) |
 | `render.mjs` | headless renderer: sheets, strips, crops, stills, PNG loops, MP4 |
 
@@ -459,3 +461,32 @@ This shows rule 4 applied to one shot of one video. The reads, the numbers and t
 | 9.8–11.0 | iris to Clawd, hold, shut | the last read gets time to land before the video ends |
 
 The first version packed all of this into about 1.3 s, and nobody could tell what had happened.
+
+---
+
+## TAXTALK
+
+This copy of the kit is set up for the TAXTALK brand. Unless the prompt asks for Clawd, the star is the TAXTALK mascot,
+น้องแท็กทอล์ค. Look at its sheet first: `node render.mjs --loop=taxtalk --sheet=2.9 --cols=1 --w=1920 --out=out/check/tt.jpg`.
+
+- **The mascot:** `taxtalk(x, y, u, options)` is `clawd()` painted in the logo's colours: a green body (`TT.green`) over a
+  blue band and blue legs (`TT.blue`), with a small cream chat-bubble badge on the belly (front and 3/4 views; `badge: false`
+  hides it). It takes every `clawd()` option, so emotions, turns, hats, emotes, dances and the arm hooks all work. Emotion
+  tints are applied on top of its green, so mood changes never flash back to Clawd's clay.
+- **Palette** `TT`: `green, greenDk, greenLt, blue, blueDk, blueLt, paper, line, gold, goldDk, red, wall, wood, woodDk`.
+  Brand green and blue lead; gold is for money; keep red for deadlines and warnings. `TT_WIPE` is the brand brush wipe:
+  `brushWipe(p, TT_WIPE)`.
+- **Props**, all painted and wordless:
+  - `receipt(x, y, s, { rot, seed })`, `receiptPile(x, y, n, s, seed)` and `pileSpot(x, y, i, s, seed)` (where receipt i
+    of a pile lies, so a falling one lands exactly on its spot)
+  - `taxForm(x, y, s, { ticks: 0..4, stamp: 0..1 })`: rows tick one by one; the stamp slams down and settles
+  - `checkmark(x, y, s, k, colour, sw, painted)`: draws itself as k goes 0 → 1
+  - `coin(x, y, r, { sy })` (a baht coin; animate `sy` to spin it) and `coinStack(x, y, n, r, seed)`
+  - `chatBubble(x, y, s, k, { col, tail, age, check, dots })`: the TAXTALK reply, typing dots or a check
+  - `calendar(x, y, s, { done: 0..1 })`: one deadline circled in red; `done` swaps it for a green check
+- **Story language:** the brand promise is "taxes stop being scary once you can talk to someone". Good beats: a pile of
+  receipts, a confusing form, a deadline, the chat bubble answering, rows ticking, a stamp, a refund coming back.
+  Show it, don't write it: the same "no text" rule applies, and numbers, form labels and amounts stay unreadable lines.
+- **The end card:** `logoCard(x, y, s, k, { tagline })` is the one lettered piece: "TAX" over the blue "TALK" box, in
+  Kanit (loaded in `studio.html`, so Thai renders properly), with an optional one-line tagline. Use it once, at the end.
+  Call `flushLetters()` before an iris or wipe that has to cover it.

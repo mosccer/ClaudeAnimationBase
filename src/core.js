@@ -277,7 +277,7 @@ async function setup() {
   brush.scaleBrushes(5); defineBrushes();
   paperG = makePaper(); grainC = makeGrain(); glowTex = makeGlowTex(); letG = createGraphics(W, H); letG.pixelDensity(1);
   outC = document.getElementById('out'); outX = outC.getContext('2d');
-  await document.fonts.load('100px "Permanent Marker"');
+  await Promise.all(['100px "Permanent Marker"', '500 100px "Kanit"', '900 100px "Kanit"'].map(f => document.fonts.load(f, 'TAXก')));
   window.ready = true;
   if (!location.search.includes('render')) devUI();
 }

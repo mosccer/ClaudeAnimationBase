@@ -1,3 +1,38 @@
+# TAXTALK Animation Base
+
+ชุดเริ่มต้นสำหรับทำแอนิเมชันลายมือวาดสีน้ำของแบรนด์ **TAXTALK** ด้วย p5.js + p5.brush และ Claude ต่อยอดมาจาก Claude Animation Base (ส่วนต้นฉบับอยู่ด้านล่าง)
+
+**มีอะไรเพิ่มมา**
+- **น้องแท็กทอล์ค** มาสคอตของแบรนด์ (`taxtalk(x, y, u, options)`): ตัวสีเขียวกับแถบและขาสีน้ำเงินแบบโลโก้ มีป้ายแชตเล็ก ๆ ที่พุง ใช้ท่าทาง อารมณ์ 31 แบบ การหัน และหมวกได้ครบเหมือน Clawd
+- **พร็อพเรื่องภาษี** (วาดด้วยพู่กันทั้งหมด ไม่มีตัวหนังสือ): ใบเสร็จ (`receipt`, `receiptPile`), แบบฟอร์มภาษีที่ติ๊กได้ทีละช่อง และตราประทับอนุมัติ (`taxForm`, `stampMark`), เหรียญบาท (`coin`, `coinStack`), บับเบิลแชตที่พิมพ์อยู่หรือขึ้นเครื่องหมายถูก (`chatBubble`), ปฏิทินวันครบกำหนด (`calendar`)
+- **ชุดสีแบรนด์** `TT` และสีของทรานซิชัน `TT_WIPE` (เขียว/น้ำเงิน)
+- **การ์ดโลโก้ตอนจบ** `logoCard()` ใช้ฟอนต์ Kanit ใส่ tagline ภาษาไทยได้
+- **วิดีโอตัวอย่าง** [src/scenes/taxtalk_demo.js](src/scenes/taxtalk_demo.js) ยาว 15.5 วินาที: ใบเสร็จท่วมโต๊ะ → TAXTALK ตอบแชต → ยื่นแบบเสร็จ ได้เงินคืน → โลโก้
+- **ชีตอ้างอิง** เปิด `studio.html?loop=taxtalk`
+
+## เริ่มใช้งาน
+
+ต้องมี Node.js, Google Chrome และ ffmpeg
+
+```bash
+npm install
+npm run taxtalk
+```
+
+ได้ไฟล์ `out/taxtalk.mp4` ถ้าจะเลื่อนดูทีละเฟรม ให้เปิด [studio.html](studio.html) ใน Chrome
+
+ทำวิดีโอใหม่โดยสั่ง Claude แบบนี้:
+
+> อ่าน ANIMATION_GUIDE.md แล้วทำวิดีโอ 15 วินาที ให้น้องแท็กทอล์คสอนวิธีลดหย่อนภาษีด้วยการเก็บใบเสร็จ
+
+| ไฟล์ | คืออะไร |
+|---|---|
+| [src/taxtalk.js](src/taxtalk.js) | ชุดสีแบรนด์ มาสคอต พร็อพ การ์ดโลโก้ และชีต `?loop=taxtalk` |
+| [src/scenes/taxtalk_demo.js](src/scenes/taxtalk_demo.js) | วิดีโอตัวอย่างของ TAXTALK พร้อมสตอรีบอร์ดในคอมเมนต์ |
+| [ANIMATION_GUIDE.md](ANIMATION_GUIDE.md) | กฎและ API ทั้งหมด (ส่วน TAXTALK อยู่ท้ายไฟล์) |
+
+---
+
 # Claude Animation Base
 
 This is a small starter kit with code, instructions and assets for animating a character in [p5.js](https://p5js.org) and [p5.brush](https://github.com/acamposuribe/p5.brush) with Claude Opus 5.5. It's based on the code from the music video [I'm Upping My P(doom)](https://github.com/JohnHeibel/PDoomVideo) and an analysis of what the model did and didn't do well. I highly recommend playing around with your prompting: make it give you the storyboard before coding, give it very broad instructions, try being very specific, ask for subagents, and try a bunch of other fun ways of testing the model's capabilities. In my testing, it can do a lot with very little, but it's also quite accurate when you give it more requirements. Also try asking the model to swap out the character or make new emotions or costumes, give it your own reference images, and try many other fun things like that. I've found that the reasoning level corresponds to how "extravagant" and detail-oriented the model makes the scene. All test videos were generated with Opus 5.5 on xhigh reasoning in Claude Code.
