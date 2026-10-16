@@ -7,7 +7,8 @@
   "scripts": {
     "sheet": "node render.mjs --sheet=0,1,2,3,4,5 --out=out/sheet.jpg",
     "video": "node render.mjs --clip --out=out/video.mp4",
-    "taxtalk": "node render.mjs --clip --out=out/taxtalk.mp4",
+    "sound": "node tools/sound.mjs",
+    "taxtalk": "node tools/sound.mjs && node render.mjs --clip --out=out/taxtalk.mp4",
     "taxtalk-sheet": "node render.mjs --loop=taxtalk --sheet=2.9 --cols=1 --w=1920 --out=out/taxtalk_sheet.jpg"
   },
   "dependencies": {
